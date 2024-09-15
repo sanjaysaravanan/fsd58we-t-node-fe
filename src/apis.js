@@ -11,3 +11,24 @@ export const createUserAPI = async (userDetails) => {
   });
   return await response.json();
 };
+
+export const verifyAccountAPI = async (token) => {
+  const response = await fetch(`${BE_URL}/users/verify-account?token=${token}`);
+  return await response.json();
+};
+
+export const userLoginAPI = async (payload) => {
+  const response = await fetch(`${BE_URL}/users/login`, {
+    body: JSON.stringify(payload),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+
+  if (response.status !== 200) {
+    throw new Error("Invalid Credentials or Something Wrong");
+  }
+
+  return await response.json();
+};

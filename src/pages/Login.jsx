@@ -1,14 +1,30 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { userLoginAPI } from "../apis";
 
 const Login = () => {
+  const isAuthenticated = Boolean(localStorage.getItem("user"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login: ", { email, password });
+    try {
+      const response = await userLoginAPI({ email, password });
+      alert(response.msg);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      navigate("/posts");
+    } catch (e) {
+      console.log("error", e);
+      alert(e.message);
+    }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to="/posts" />;
+  }
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">

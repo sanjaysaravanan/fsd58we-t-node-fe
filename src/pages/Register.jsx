@@ -1,10 +1,11 @@
 // src/pages/Register.js
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { createUserAPI } from "../apis";
 
 const Register = () => {
+  const isAuthenticated = Boolean(localStorage.getItem("user"));
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -31,13 +32,18 @@ const Register = () => {
     }
     try {
       delete data.confirmPassword;
-      await createUserAPI(data);
+      const resp = await createUserAPI(data);
+      alert(resp?.msg || "User Creation Success");
       navigate("/login");
     } catch (e) {
       alert("Something Went Wrong, Please try again later");
       console.log("Error", e);
     }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to="/posts" />;
+  }
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
