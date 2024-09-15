@@ -1,4 +1,5 @@
-const BE_URL = "http://localhost:4500";
+// use the below syntax for VITE_
+const BE_URL = import.meta.env.VITE_BE_URL;
 
 // Create User API
 export const createUserAPI = async (userDetails) => {
